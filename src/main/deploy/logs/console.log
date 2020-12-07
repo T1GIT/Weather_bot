@@ -1,0 +1,100 @@
+2020-12-07T15:16:14.354407+00:00 app[worker.1]: ---------MESSAGE-OUT-------2020/12/07 15:16:14
+2020-12-07T15:16:14.354488+00:00 app[worker.1]: Chat ID:    946723294
+2020-12-07T15:16:14.354547+00:00 app[worker.1]: Text:       Здравствуй, юный подаван (@_@)
+2020-12-07T15:16:14.354591+00:00 app[worker.1]: -----------END-------------
+2020-12-07T15:16:14.397636+00:00 app[worker.1]: 
+2020-12-07T15:16:14.397638+00:00 app[worker.1]: ---------MESSAGE-OUT-------2020/12/07 15:16:14
+2020-12-07T15:16:14.398754+00:00 app[worker.1]: Chat ID:    946723294
+2020-12-07T15:16:14.398848+00:00 app[worker.1]: Text:       Откуда ты, знать я желаю
+2020-12-07T15:16:14.398910+00:00 app[worker.1]: -----------END-------------
+2020-12-07T15:16:14.453411+00:00 app[worker.1]: 
+2020-12-07T15:16:14.453413+00:00 app[worker.1]: ---------MESSAGE-IN--------2020/12/07 15:16:14
+2020-12-07T15:16:14.453497+00:00 app[worker.1]: Name:       L1GHT null (L1GHTsugar)
+2020-12-07T15:16:14.453547+00:00 app[worker.1]: Chat ID:    946723294
+2020-12-07T15:16:14.453610+00:00 app[worker.1]: Text:       Ну и херли ты не работаешь?
+2020-12-07T15:16:14.453657+00:00 app[worker.1]: -----------END-------------
+2020-12-07T15:16:14.488095+00:00 app[worker.1]: 
+2020-12-07T15:16:14.488097+00:00 app[worker.1]: ---------MESSAGE-OUT-------2020/12/07 15:16:14
+2020-12-07T15:16:14.488217+00:00 app[worker.1]: Chat ID:    946723294
+2020-12-07T15:16:14.488299+00:00 app[worker.1]: Text:       Не известен город ну и хер��и ты не работаешь? мне
+2020-12-07T15:16:14.488349+00:00 app[worker.1]: -----------END-------------
+2020-12-07T15:16:14.554228+00:00 app[worker.1]: 
+2020-12-07T15:16:14.554239+00:00 app[worker.1]: ---------MESSAGE-OUT-------2020/12/07 15:16:14
+2020-12-07T15:16:14.554264+00:00 app[worker.1]: Chat ID:    946723294
+2020-12-07T15:16:14.556509+00:00 app[worker.1]: Text:       Откуда ты, знать я желаю
+2020-12-07T15:16:14.556674+00:00 app[worker.1]: -----------END-------------
+2020-12-07T15:16:14.599135+00:00 app[worker.1]: 
+2020-12-07T15:16:14.599137+00:00 app[worker.1]: ---------MESSAGE-IN--------2020/12/07 15:16:14
+2020-12-07T15:16:14.609498+00:00 app[worker.1]: Name:       L1GHT null (L1GHTsugar)
+2020-12-07T15:16:14.609607+00:00 app[worker.1]: Chat ID:    946723294
+2020-12-07T15:16:14.609689+00:00 app[worker.1]: Text:       Ска
+2020-12-07T15:16:14.609746+00:00 app[worker.1]: -----------END-------------
+2020-12-07T15:16:14.802624+00:00 app[worker.1]: 
+2020-12-07T15:16:14.802626+00:00 app[worker.1]: ---------MESSAGE-OUT-------2020/12/07 15:16:14
+2020-12-07T15:16:14.802658+00:00 app[worker.1]: Chat ID:    946723294
+2020-12-07T15:16:14.802711+00:00 app[worker.1]: Text:       Не известен город ска мне
+2020-12-07T15:16:14.804685+00:00 app[worker.1]: -----------END-------------
+2020-12-07T15:16:14.905609+00:00 app[worker.1]: 
+2020-12-07T15:16:14.905612+00:00 app[worker.1]: ---------MESSAGE-OUT-------2020/12/07 15:16:14
+2020-12-07T15:16:14.905619+00:00 app[worker.1]: Chat ID:    946723294
+2020-12-07T15:16:14.905991+00:00 app[worker.1]: Text:       Откуда ты, знать я желаю
+2020-12-07T15:16:14.906034+00:00 app[worker.1]: -----------END-------------
+2020-12-07T15:16:25.632472+00:00 app[api]: Scaled to worker@0:Free by user derbindima5@gmail.com
+2020-12-07T15:16:25.929625+00:00 heroku[worker.1]: State changed from up to down
+2020-12-07T15:16:26.966636+00:00 heroku[worker.1]: Stopping all processes with SIGTERM
+2020-12-07T15:16:27.416510+00:00 heroku[worker.1]: Process exited with status 143
+2020-12-07T17:10:49.000000+00:00 app[api]: Build started by user derbindima5@gmail.com
+2020-12-07T17:11:14.578391+00:00 app[api]: Release v20 created by user derbindima5@gmail.com
+2020-12-07T17:11:14.578391+00:00 app[api]: Deploy ded69624 by user derbindima5@gmail.com
+2020-12-07T17:11:17.000000+00:00 app[api]: Build succeeded
+2020-12-07T17:11:38.401446+00:00 app[api]: Scaled to worker@1:Free by user derbindima5@gmail.com
+2020-12-07T17:11:42.609909+00:00 heroku[worker.1]: Starting process with command `sh target/bin/WeatherBot`
+2020-12-07T17:11:43.172259+00:00 heroku[worker.1]: State changed from starting to up
+2020-12-07T17:11:44.256961+00:00 app[worker.1]: Picked up JAVA_TOOL_OPTIONS: -XX:+UseContainerSupport -Xmx300m -Xss512k -XX:CICompilerCount=2 -Dfile.encoding=UTF-8
+2020-12-07T17:11:45.862488+00:00 app[worker.1]: 
+2020-12-07T17:11:45.862522+00:00 app[worker.1]: ---------MESSAGE-IN--------2020/12/07 17:11:45
+2020-12-07T17:11:45.874680+00:00 app[worker.1]: Name:       T1MON null (T1TELGRAM)
+2020-12-07T17:11:45.874792+00:00 app[worker.1]: Chat ID:    985605565
+2020-12-07T17:11:45.874897+00:00 app[worker.1]: Text:       Jj
+2020-12-07T17:11:45.874929+00:00 app[worker.1]: -----------END-------------
+2020-12-07T17:11:46.029711+00:00 app[worker.1]: 
+2020-12-07T17:11:46.029716+00:00 app[worker.1]: ---------MESSAGE-OUT-------2020/12/07 17:11:46
+2020-12-07T17:11:46.029781+00:00 app[worker.1]: Chat ID:    985605565
+2020-12-07T17:11:46.029871+00:00 app[worker.1]: Text:       Не известен город Jj мне
+2020-12-07T17:11:46.029897+00:00 app[worker.1]: -----------END-------------
+2020-12-07T17:11:46.129105+00:00 app[worker.1]: 
+2020-12-07T17:11:46.129139+00:00 app[worker.1]: ---------MESSAGE-OUT-------2020/12/07 17:11:46
+2020-12-07T17:11:46.129144+00:00 app[worker.1]: Chat ID:    985605565
+2020-12-07T17:11:46.129145+00:00 app[worker.1]: Text:       Откуда ты, знать я желаю
+2020-12-07T17:11:46.129187+00:00 app[worker.1]: -----------END-------------
+2020-12-07T17:11:49.925424+00:00 app[worker.1]: 
+2020-12-07T17:11:49.925436+00:00 app[worker.1]: ---------MESSAGE-IN--------2020/12/07 17:11:49
+2020-12-07T17:11:49.925486+00:00 app[worker.1]: Name:       T1MON null (T1TELGRAM)
+2020-12-07T17:11:49.925531+00:00 app[worker.1]: Chat ID:    985605565
+2020-12-07T17:11:49.925577+00:00 app[worker.1]: Text:       H
+2020-12-07T17:11:49.925621+00:00 app[worker.1]: -----------END-------------
+2020-12-07T17:11:49.999578+00:00 app[worker.1]: 
+2020-12-07T17:11:49.999582+00:00 app[worker.1]: ---------MESSAGE-OUT-------2020/12/07 17:11:49
+2020-12-07T17:11:49.999619+00:00 app[worker.1]: Chat ID:    985605565
+2020-12-07T17:11:49.999676+00:00 app[worker.1]: Text:       Не известен город H мне
+2020-12-07T17:11:49.999730+00:00 app[worker.1]: -----------END-------------
+2020-12-07T17:11:50.180920+00:00 app[worker.1]: 
+2020-12-07T17:11:50.180930+00:00 app[worker.1]: ---------MESSAGE-OUT-------2020/12/07 17:11:50
+2020-12-07T17:11:50.180986+00:00 app[worker.1]: Chat ID:    985605565
+2020-12-07T17:11:50.180991+00:00 app[worker.1]: Text:       Откуда ты, знать я желаю
+2020-12-07T17:11:50.181013+00:00 app[worker.1]: -----------END-------------
+2020-12-07T17:12:03.462418+00:00 app[worker.1]: 
+2020-12-07T17:12:03.462449+00:00 app[worker.1]: ---------MESSAGE-IN--------2020/12/07 17:12:03
+2020-12-07T17:12:03.462456+00:00 app[worker.1]: Name:       T1MON null (T1TELGRAM)
+2020-12-07T17:12:03.462593+00:00 app[worker.1]: Chat ID:    985605565
+2020-12-07T17:12:03.462645+00:00 app[worker.1]: Text:       @dima
+2020-12-07T17:12:03.462690+00:00 app[worker.1]: -----------END-------------
+2020-12-07T17:12:03.466124+00:00 app[worker.1]: org.telegram.telegrambots.meta.exceptions.TelegramApiValidationException: ChatId parameter can't be empty in method: SendDocument(chatId=null, document=InputFile(attachName=attach://dima.log, mediaName=dima.log, newMediaFile=src/main/deploy/logs/dima.log, newMediaStream=null, isNew=true), caption=null, disableNotification=null, replyToMessageId=null, replyMarkup=null, parseMode=null, thumb=null, captionEntities=null, allowSendingWithoutReply=null)
+2020-12-07T17:12:03.466621+00:00 app[worker.1]: at org.telegram.telegrambots.meta.api.methods.send.SendDocument.validate(SendDocument.java:101)
+2020-12-07T17:12:03.466652+00:00 app[worker.1]: at org.telegram.telegrambots.bots.DefaultAbsSender.execute(DefaultAbsSender.java:152)
+2020-12-07T17:12:03.466686+00:00 app[worker.1]: at telegramBot.TelegramBot.adminCommand(TelegramBot.java:117)
+2020-12-07T17:12:03.466718+00:00 app[worker.1]: at telegramBot.TelegramBot.answer(TelegramBot.java:81)
+2020-12-07T17:12:03.466752+00:00 app[worker.1]: at telegramBot.TelegramBot.onUpdateReceived(TelegramBot.java:61)
+2020-12-07T17:12:03.466792+00:00 app[worker.1]: at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+2020-12-07T17:12:03.466824+00:00 app[worker.1]: at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
+2020-12-07T17:12:03.466856+00:00 app[worker.1]: at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:320)

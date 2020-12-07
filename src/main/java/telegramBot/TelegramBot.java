@@ -29,6 +29,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final Subscribers subscribers = new Subscribers();
     private final HashMap<String, User> users = new HashMap<>();
     private final HashSet<String> adminIdList = new HashSet<>();
+    private final char adminChar = '$';
 
     public TelegramBot() {
         super();
@@ -77,7 +78,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         String chatId = String.valueOf(inMsg.getChatId());
         String inText = inMsg.getText();
         User user = getUserById(chatId);
-        if (inText.charAt(0) == '@') {
+        if (inText.charAt(0) == adminChar) {
             adminCommand(user, inText.substring(1));
         } else {
             if (inText.equals("/start")) {
@@ -110,9 +111,10 @@ public class TelegramBot extends TelegramLongPollingBot {
                 logName = logName.toLowerCase();
                 File file = new File(Paths.getLogs(), logName + ".log");
                 if (!file.exists()) {
-                    user.send("Can't find file " + logName + ".log");
+                    user.send("Не существует " + logName + ".log");
                 } else {
                     SendDocument sendDocument = new SendDocument();
+                    sendDocument.setChatId(user.getId());
                     sendDocument.setDocument(new InputFile(file));
                     execute(sendDocument);
                 }

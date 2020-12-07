@@ -19,7 +19,7 @@ public abstract class Parser {
     public static String current(String jsonString) {
         try {
             CurrentWeather currentWeather = gson.fromJson(jsonString, CurrentWeather.class);
-            Path templatePath = Paths.get(templateDir, "currentWeather.html");
+            Path templatePath = Paths.get(templateDir, "current.html");
             String template = new String(Files.readAllBytes(templatePath));
             String city = currentWeather.getCity();
             if (city.charAt(city.length() - 1) == 'а') {
