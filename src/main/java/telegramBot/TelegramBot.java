@@ -1,8 +1,9 @@
 package telegramBot;
 
-import org.apache.log4j.Logger;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -11,31 +12,35 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import telegramBot.entitys.Subscribers;
 import telegramBot.entitys.User;
+import utils.Paths;
 import weatherGetter.WeatherGetter;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class TelegramBot extends TelegramLongPollingBot {
     private final WeatherGetter weatherGetter = new WeatherGetter();
     private final Subscribers subscribers = new Subscribers();
     private final HashMap<String, User> users = new HashMap<>();
-
-    public WeatherGetter getWeatherGetter() {
-        return weatherGetter;
-    }
+    private final HashSet<String> adminIdList = new HashSet<>();
 
     public TelegramBot() {
         super();
         User.setTelegramBot(this);
         User.setWeatherGetter(weatherGetter);
-        User.setSubscribers(subscribers);
         subscribers.start();
+        try {
+            Scanner scanner = new Scanner(new FileReader(Paths.getAdmin()));
+            while (scanner.hasNextLine()) adminIdList.add(scanner.nextLine().strip());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -57,38 +62,68 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    private void answer(Message inMsg) {
-        String chatId = String.valueOf(inMsg.getChatId());
-        String inText = inMsg.getText().toLowerCase();
+    private User getUserById(String chatId) {
         User user;
         if (users.containsKey(chatId)) {
             user = users.get(chatId);
         } else {
-            user = new User(chatId, inMsg.getChat().getFirstName());
+            user = new User(chatId);
             users.put(chatId, user);
         }
-        if (inText.equals("/start")) {
-            user.send("Здравствуй, юный подаван (@_@)");
-            if (!user.hasLocation()) {
-                user.send("Откуда ты, знать я желаю");
-            }
+        return user;
+    }
+
+    private void answer(Message inMsg) {
+        String chatId = String.valueOf(inMsg.getChatId());
+        String inText = inMsg.getText();
+        User user = getUserById(chatId);
+        if (inText.charAt(0) == '@') {
+            adminCommand(user, inText.substring(1));
         } else {
-            if (!user.hasLocation()) {
-                try {
-                    weatherGetter.getCurrent(inText);
-                    user.setLocation(inText);
-                    user.send("Твое местоположение известно мне стало");
-                } catch (IOException e) {
-                    user.send("Не известен город " + inText + " мне");
+            if (inText.equals("/start")) {
+                user.send("Здравствуй, юный подаван (@_@)");
+                if (!user.hasLocation()) {
                     user.send("Откуда ты, знать я желаю");
                 }
             } else {
-                command(user, inText);
+                if (!user.hasLocation()) {
+                    try {
+                        weatherGetter.getCurrent(inText);
+                        user.setLocation(inText);
+                        user.send("Твое местоположение известно мне стало");
+                    } catch (IOException e) {
+                        user.send("Не известен город " + inText + " мне");
+                        user.send("Откуда ты, знать я желаю");
+                    }
+                } else {
+                    command(user, inText);
+                }
             }
         }
     }
 
-    public void command(User user, String command) {
+    private void adminCommand(User user, String logName) {
+        if (!adminIdList.contains(user.getId())) {
+            user.send("Прав администратора ты не имеешь");
+        } else {
+            try {
+                logName = logName.toLowerCase();
+                File file = new File(Paths.getLogs(), logName + ".log");
+                if (!file.exists()) {
+                    user.send("Can't find file " + logName + ".log");
+                } else {
+                    SendDocument sendDocument = new SendDocument();
+                    sendDocument.setDocument(new InputFile(file));
+                    execute(sendDocument);
+                }
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void command(User user, String command) {
+        command = command.toLowerCase();
         switch (command) {
             case "сегодня" -> user.sendCurrent();
             case "завтра" -> {
@@ -104,10 +139,20 @@ public class TelegramBot extends TelegramLongPollingBot {
                 user.send("Пока что не работает");
             }
             case "подписаться" -> {
-                subscribers.add(user);
-                user.send("Каждый день получать погоду будешь ты");
+                if (subscribers.contains(user)) {
+                    user.send("Тебя уже знаю я");
+                } else {
+                    subscribers.add(user);
+                    user.send("Каждый день получать погоду будешь ты");
+                }
             }
             case "отписаться" -> {
+                if (!subscribers.contains(user)) {
+                    user.send("Не помню тебя я");
+                } else {
+                    subscribers.add(user);
+                    user.send("Каждый день получать погоду будешь ты");
+                }
                 subscribers.remove(user);
                 user.send("Получать погоду больше не будешь ты");
             }
@@ -115,6 +160,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 user.setLocation(null);
                 user.send("Куда отправился ты?");
             }
+            default ->  user.send("Непонятны мне слова твои");
         }
     }
 
@@ -122,7 +168,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         try {
             SendMessage outMsg = new SendMessage();
             setButtons(outMsg, subscribers.contains(user), user.hasLocation());
-            outMsg.setChatId(user.getChatId());
+            outMsg.setChatId(user.getId());
             outMsg.setText(text);
             outMsg.setParseMode("HTML");
             msgOutLog(outMsg);

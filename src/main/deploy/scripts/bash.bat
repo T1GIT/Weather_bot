@@ -1,0 +1,1 @@
+heroku run bash --app t1weather-bot

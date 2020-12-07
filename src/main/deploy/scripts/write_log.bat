@@ -1,0 +1,1 @@
+heroku logs --app t1weather-bot > ../logs/console.log

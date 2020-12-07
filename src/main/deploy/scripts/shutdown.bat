@@ -1,0 +1,1 @@
+heroku ps:scale worker=0 --app t1weather-bot

@@ -7,11 +7,9 @@ import weatherGetter.WeatherGetter;
 import java.io.IOException;
 
 public class User {
-    private static Subscribers subscribers;
     private static TelegramBot telegramBot;
     private static WeatherGetter weatherGetter;
-    private final String chatId;
-    private String name;
+    private final String id;
     private String location;
 
     public static void setWeatherGetter(WeatherGetter weatherGetter) {
@@ -22,16 +20,8 @@ public class User {
         User.telegramBot = telegramBot;
     }
 
-    public static void setSubscribers(Subscribers subscribers) {
-        User.subscribers = subscribers;
-    }
-
-    public String getChatId() {
-        return chatId;
-    }
-
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
     public String getLocation() {
@@ -42,25 +32,12 @@ public class User {
         this.location = location;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public User(String chatId, String name) {
-        this.chatId = chatId;
-        this.name = name;
+    public User(String id) {
+        this.id = id;
     }
 
     public boolean hasLocation() {
         return this.getLocation() != null;
-    }
-
-    public void setSubscribed(boolean val) {
-        if (val) {
-            subscribers.add(this);
-        } else {
-            subscribers.remove(this);
-        }
     }
 
     public void send(String text) {
