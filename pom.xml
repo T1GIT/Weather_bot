@@ -7,6 +7,7 @@
     <groupId>org.example</groupId>
     <artifactId>Weather_bot</artifactId>
     <version>0.9</version>
+
     <build>
         <plugins>
             <plugin>
