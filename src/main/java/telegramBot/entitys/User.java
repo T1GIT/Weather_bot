@@ -38,10 +38,6 @@ public class User {
         return location;
     }
 
-    public boolean isSubscribed() {
-        return subscribers.contains(this);
-    }
-
     public void setLocation(String location) {
         this.location = location;
     }

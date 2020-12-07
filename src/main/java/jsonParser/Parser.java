@@ -5,22 +5,23 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Calendar;
 
 public abstract class Parser {
     private static final Gson gson = new Gson();
-    private static final String templatesFolder = "/app/src/main/resources/html/";
+    private static final String templatesDir = "/app/src/main/resources/html/";
+    private static final String templatesDeployDir = "/src/main/resources/html/";
     private static final String[] months = new String[]{"января", "февраля", "марта", "апреля",
             "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"};
     private static final String[] weekDays = new String[]{"Воскресенье",
             "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"};
     public static String current(String jsonString) {
         try {
-            System.out.println(System.getProperty("user.dir"));
-            String path = templatesFolder + "currentWeather.html";
             CurrentWeather currentWeather = gson.fromJson(jsonString, CurrentWeather.class);
-            String template = new String(Files.readAllBytes(Paths.get(path)));
+            Path templatePath = getTemplatePath("current.html");
+            String template = new String(Files.readAllBytes(templatePath));
             String city = currentWeather.getCity();
             if (city.charAt(city.length() - 1) == 'а') {
                 city = city.substring(0, city.length() - 1) + "e";
@@ -47,5 +48,11 @@ public abstract class Parser {
             e.printStackTrace();
             throw new AssertionError("No template for current weather");
         }
+    }
+
+    private static Path getTemplatePath(String name) {
+        return Files.exists(Paths.get(templatesDir))
+                ? Paths.get(templatesDir + name)
+                : Paths.get(templatesDeployDir + name);
     }
 }

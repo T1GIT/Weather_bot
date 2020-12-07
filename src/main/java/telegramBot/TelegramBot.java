@@ -67,11 +67,10 @@ public class TelegramBot extends TelegramLongPollingBot {
             user = new User(chatId, inMsg.getChat().getFirstName());
             users.put(chatId, user);
         }
-
         if (inText.equals("/start")) {
             user.send("Здравствуй, юный подаван (@_@)");
             if (!user.hasLocation()) {
-                user.send("Откуда ты, желаю знать я");
+                user.send("Откуда ты, знать я желаю");
             }
         } else {
             if (!user.hasLocation()) {
@@ -122,7 +121,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     public synchronized void sendMsg(User user, String text) {
         try {
             SendMessage outMsg = new SendMessage();
-            setButtons(outMsg, user.isSubscribed(), user.hasLocation());
+            setButtons(outMsg, subscribers.contains(user), user.hasLocation());
             outMsg.setChatId(user.getChatId());
             outMsg.setText(text);
             outMsg.setParseMode("HTML");
