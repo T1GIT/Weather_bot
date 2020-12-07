@@ -152,11 +152,9 @@ public class TelegramBot extends TelegramLongPollingBot {
                 if (!subscribers.contains(user)) {
                     user.send("Не помню тебя я");
                 } else {
-                    subscribers.add(user);
-                    user.send("Каждый день получать погоду будешь ты");
+                    subscribers.remove(user);
+                    user.send("Получать погоду больше не будешь ты");
                 }
-                subscribers.remove(user);
-                user.send("Получать погоду больше не будешь ты");
             }
             case "изменить расположение" -> {
                 subscribers.remove(user);
