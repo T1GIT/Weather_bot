@@ -1,5 +1,6 @@
 package telegramBot;
 
+import org.apache.log4j.Logger;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -19,7 +20,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -30,6 +30,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final HashMap<String, User> users = new HashMap<>();
     private final HashSet<String> adminIdList = new HashSet<>();
     private final char adminChar = '$';
+    private static final Logger log = Logger.getLogger(TelegramBot.class);
 
     public TelegramBot() {
         super();
@@ -109,6 +110,11 @@ public class TelegramBot extends TelegramLongPollingBot {
         } else {
             try {
                 logName = logName.toLowerCase();
+                if (logName.equals("console")) {
+                    Process ps = Runtime.getRuntime().exec("heroku logs --app t1weather-bot > ../logs/console.log");
+                    ps.waitFor();
+                    ps.destroy();
+                }
                 File file = new File(Paths.getLogs(), logName + ".log");
                 if (!file.exists()) {
                     user.send("Не существует " + logName + ".log");
@@ -118,7 +124,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     sendDocument.setDocument(new InputFile(file));
                     execute(sendDocument);
                 }
-            } catch (TelegramApiException e) {
+            } catch (TelegramApiException | IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         }
@@ -168,6 +174,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     public synchronized void sendMsg(User user, String text) {
         try {
+            log.info("text");
             SendMessage outMsg = new SendMessage();
             setButtons(outMsg, subscribers.contains(user), user.hasLocation());
             outMsg.setChatId(user.getId());
