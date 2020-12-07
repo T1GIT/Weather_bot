@@ -10,7 +10,7 @@ import java.util.Calendar;
 
 public abstract class Parser {
     private static final Gson gson = new Gson();
-    private static final String templatesFolder = "src\\main\\java\\attestation_2\\weatherBot\\json\\html\\";
+    private static final String templatesFolder = "src\\main\\resources\\html\\";
     private static final String[] months = new String[]{"января", "февраля", "марта", "апреля",
             "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"};
     private static final String[] weekDays = new String[]{"Воскресенье",
