@@ -17,7 +17,7 @@ public abstract class Parser {
             "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"};
     public static String current(String jsonString) {
         try {
-            System.getProperty("user.dir");
+            System.out.println(System.getProperty("user.dir"));
             String path = templatesFolder + "currentWeather.html";
             CurrentWeather currentWeather = gson.fromJson(jsonString, CurrentWeather.class);
             String template = new String(Files.readAllBytes(Paths.get(path)));
