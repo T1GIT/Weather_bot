@@ -20,17 +20,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class TelegramBot extends TelegramLongPollingBot {
+    private static final Logger log = Logger.getLogger(TelegramBot.class);
     private final WeatherGetter weatherGetter = new WeatherGetter();
     private final Subscribers subscribers = new Subscribers();
     private final HashMap<String, User> users = new HashMap<>();
     private final HashSet<String> adminIdList = new HashSet<>();
     private final char adminChar = '$';
-    private static final Logger log = Logger.getLogger(TelegramBot.class);
 
     public TelegramBot() {
         super();
@@ -41,7 +39,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             Scanner scanner = new Scanner(new FileReader(Paths.getAdmin()));
             while (scanner.hasNextLine()) adminIdList.add(scanner.nextLine().strip());
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.toString());
         }
     }
 
@@ -59,17 +57,16 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             Message inMsg = update.getMessage();
-            msgInLog(inMsg);
             answer(inMsg);
         }
     }
 
-    private User getUserById(String chatId) {
+    private User getUserById(String chatId, String name) {
         User user;
         if (users.containsKey(chatId)) {
             user = users.get(chatId);
         } else {
-            user = new User(chatId);
+            user = new User(chatId, name);
             users.put(chatId, user);
         }
         return user;
@@ -77,8 +74,10 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void answer(Message inMsg) {
         String chatId = String.valueOf(inMsg.getChatId());
+        String name = inMsg.getChat().getFirstName();
         String inText = inMsg.getText();
-        User user = getUserById(chatId);
+        User user = getUserById(chatId, name);
+        log.info("in  | " + user.getId() + " | " + user.getName() + " | " + inMsg.getText().replaceAll("\n\f\n", " "));
         if (inText.charAt(0) == adminChar) {
             adminCommand(user, inText.substring(1));
         } else {
@@ -110,11 +109,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         } else {
             try {
                 logName = logName.toLowerCase();
-                if (logName.equals("console")) {
-                    Process ps = Runtime.getRuntime().exec("heroku logs --app t1weather-bot > ../logs/console.log");
-                    ps.waitFor();
-                    ps.destroy();
-                }
                 File file = new File(Paths.getLogs(), logName + ".log");
                 if (!file.exists()) {
                     user.send("Не существует " + logName + ".log");
@@ -124,8 +118,8 @@ public class TelegramBot extends TelegramLongPollingBot {
                     sendDocument.setDocument(new InputFile(file));
                     execute(sendDocument);
                 }
-            } catch (TelegramApiException | IOException | InterruptedException e) {
-                e.printStackTrace();
+            } catch (TelegramApiException e) {
+                log.error(e.toString());
             }
         }
     }
@@ -165,6 +159,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 user.send("Получать погоду больше не будешь ты");
             }
             case "изменить расположение" -> {
+                subscribers.remove(user);
                 user.setLocation(null);
                 user.send("Куда отправился ты?");
             }
@@ -174,16 +169,15 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     public synchronized void sendMsg(User user, String text) {
         try {
-            log.info("text");
             SendMessage outMsg = new SendMessage();
             setButtons(outMsg, subscribers.contains(user), user.hasLocation());
             outMsg.setChatId(user.getId());
             outMsg.setText(text);
             outMsg.setParseMode("HTML");
-            msgOutLog(outMsg);
+            log.info("out | " + user.getId() + " | " + user.getName() + " | " + text.replaceAll("[\r\f\n]", " "));
             execute(outMsg);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            log.error(e.toString());
         }
     }
 
@@ -222,29 +216,5 @@ public class TelegramBot extends TelegramLongPollingBot {
             replyKeyboardRemove.setRemoveKeyboard(true);
             outMsg.setReplyMarkup(replyKeyboardRemove);
         }
-    }
-
-    private void msgInLog(Message msg) {
-        String firstName = msg.getChat().getFirstName();
-        String lastName = msg.getChat().getLastName();
-        String userName = msg.getChat().getUserName();
-        String msgText = msg.getText();
-        String chatId = String.valueOf(msg.getChatId());
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        System.out.println("\n ---------MESSAGE-IN--------" + dateFormat.format(new Date()));
-        System.out.println("    Name:       " + firstName + " " + lastName + " (" + userName + ")");
-        System.out.println("    Chat ID:    " + chatId);
-        System.out.println("    Text:       " + msgText);
-        System.out.println(" -----------END-------------");
-    }
-
-    private void msgOutLog(SendMessage msg) {
-        String chatId = String.valueOf(msg.getChatId());
-        String msgText = msg.getText();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        System.out.println("\n ---------MESSAGE-OUT-------" + dateFormat.format(new Date()));
-        System.out.println("    Chat ID:    " + chatId);
-        System.out.println("    Text:       " + msgText);
-        System.out.println(" -----------END-------------");
     }
 }

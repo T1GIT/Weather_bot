@@ -1,1 +1,2 @@
-heroku run bash --app t1weather-bot
+SET /P NAME=<appname.txt
+heroku run bash --app %NAME%

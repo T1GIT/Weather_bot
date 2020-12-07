@@ -1,1 +1,2 @@
-heroku logs --app t1weather-bot > ../logs/console.log
+SET /P NAME=<appname.txt
+heroku logs --app %NAME% > ../logs/console.log

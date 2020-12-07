@@ -1,16 +1,20 @@
 package telegramBot.entitys;
 
 import jsonParser.Parser;
+import org.apache.log4j.Logger;
 import telegramBot.TelegramBot;
 import weatherGetter.WeatherGetter;
 
 import java.io.IOException;
+
 
 public class User {
     private static TelegramBot telegramBot;
     private static WeatherGetter weatherGetter;
     private final String id;
     private String location;
+    private String name;
+    private static Logger log = Logger.getLogger(User.class);
 
     public static void setWeatherGetter(WeatherGetter weatherGetter) {
         User.weatherGetter = weatherGetter;
@@ -32,8 +36,9 @@ public class User {
         this.location = location;
     }
 
-    public User(String id) {
+    public User(String id, String name) {
         this.id = id;
+        this.name = name;
     }
 
     public boolean hasLocation() {
@@ -50,7 +55,7 @@ public class User {
             String outText = Parser.current(jsonString);
             telegramBot.sendMsg(this, outText);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.toString());
         }
     }
 
@@ -64,5 +69,9 @@ public class User {
 
     public void sendMonth() {
 
+    }
+
+    public String getName() {
+        return name;
     }
 }

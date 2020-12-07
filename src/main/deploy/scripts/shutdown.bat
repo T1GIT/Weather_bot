@@ -1,1 +1,2 @@
-heroku ps:scale worker=0 --app t1weather-bot
+SET /P NAME=<appname.txt
+heroku ps:scale worker=0 --app %NAME%

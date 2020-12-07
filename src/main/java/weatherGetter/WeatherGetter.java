@@ -1,15 +1,15 @@
 package weatherGetter;
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class WeatherGetter {
+    private final Logger log = Logger.getLogger(WeatherGetter.class);
     private final String apiKey = "939a1ccf2efcee64d5f92bd8d3811fce";
     private final String units = "metric";
     private final String lang = "ru";
@@ -22,23 +22,11 @@ public class WeatherGetter {
         connection.setRequestMethod("GET");
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String inputLine;
-
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
+        while ((inputLine = in.readLine()) != null) response.append(inputLine);
         in.close();
         String answer = response.toString();
-        log(url, answer);
-
+        log.info(url + " | " + answer.replaceAll("\n\f\n", " "));
         return answer;
-    }
-
-    private void log(String url, String answer) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        System.out.println("\n ---------REQUEST---------" + dateFormat.format(new Date()));
-        System.out.println("    URL:        " + url);
-        System.out.println("    Answer:     " + answer);
-        System.out.println(" -----------END-------------");
     }
 
     public String getCurrent(String location) throws IOException {

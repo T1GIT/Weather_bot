@@ -2,6 +2,7 @@ package jsonParser;
 
 import jsonParser.templates.currentWeather.CurrentWeather;
 import com.google.gson.Gson;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.Calendar;
 
 public abstract class Parser {
+    private static final Logger log = Logger.getLogger(Parser.class);
     private static final String templateDir = utils.Paths.getTemplate();
     private static final Gson gson = new Gson();
     private static final String[] months = new String[]{"января", "февраля", "марта", "апреля",
@@ -44,8 +46,8 @@ public abstract class Parser {
                     currentWeather.getWind().getDirection()
             );
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new AssertionError("No template for current weather");
+            log.error(e.toString());
         }
+        return null;
     }
 }
