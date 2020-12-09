@@ -18,7 +18,7 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>*</include>
-                    <include>html/*.html</include>
+                    <include>html/**/*.html</include>
                 </includes>
             </resource>
         </resources>

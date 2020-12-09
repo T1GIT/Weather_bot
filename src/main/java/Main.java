@@ -14,6 +14,8 @@ public class Main {
             telegramBotsApi.registerBot(new TelegramBot());
         } catch (TelegramApiException e) {
             log.error(e.toString());
+        } catch (Exception e) {
+            log.fatal(e.toString());
         }
     }
 }

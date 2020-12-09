@@ -1,4 +1,4 @@
-package telegramBot.entitys;
+package telegramBot.entities;
 
 import java.util.Calendar;
 import java.util.HashSet;

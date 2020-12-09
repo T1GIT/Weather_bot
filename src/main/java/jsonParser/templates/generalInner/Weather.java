@@ -1,4 +1,4 @@
-package jsonParser.templates.currentWeather.inner;
+package jsonParser.templates.generalInner;
 
 public class Weather {
     private String main;

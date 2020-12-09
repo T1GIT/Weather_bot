@@ -8,6 +8,8 @@ public abstract class Paths {
     private static final String deployTemplatesDir = "app/src/main/resources/html/";
     private static final String admin = "src/main/deploy/administrators.txt";
     private static final String deployAdmin = "app/src/main/deploy/administrators.txt";
+    private static final String keys = "src/main/resources/api_keys.txt";
+    private static final String deployKeys = "app/src/main/resources/api_keys.txt";
     private static final String logDir = "src/main/deploy/logs/";
     private static final String deployLogDir = "app/src/main/deploy/logs/";
 
@@ -29,4 +31,9 @@ public abstract class Paths {
                 : deployLogDir;
     }
 
+    public static String getKeys() {
+        return Files.exists(java.nio.file.Paths.get(keys))
+                ? keys
+                : deployKeys;
+    }
 }
