@@ -14,6 +14,7 @@ public class Subscribers extends Thread {
     private final Timer timer;
 
     public Subscribers() {
+        System.out.println("INTITIALISING");
         subscribers = new HashSet<>();
         day.set(Calendar.HOUR_OF_DAY, time[0]);
         day.set(Calendar.MINUTE, time[1]);
@@ -36,7 +37,9 @@ public class Subscribers extends Thread {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                System.out.println("SCHEDULE");
                 for (User user: subscribers) {
+                    System.out.println("SENDING >>>>>>>>>>> " + user.getName());
                     user.sendCurrent();
                 }
             }
