@@ -6,7 +6,7 @@ import jsonParser.templates.currentWeather.inner.Wind;
 import jsonParser.templates.oneCall.inner.Hourly;
 import jsonParser.templates.oneCall.inner.daily.Daily;
 import jsonParser.templates.oneCall.inner.daily.inner.Temp;
-import org.apache.log4j.Logger;
+import utils.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 public abstract class Parser {
-    private static final Logger log = Logger.getLogger(Parser.class);
     private static final String templateDir = utils.Paths.getTemplate();
     private static final String SOURCE = "openweathermap.org";
     private static final String[] MONTHS = new String[]{"января", "февраля", "марта", "апреля",
@@ -99,7 +98,7 @@ public abstract class Parser {
             Path footerPath = Paths.get(templateDir, "footer.html");
             row += String.format(new String(Files.readAllBytes(footerPath)), SOURCE);
         } catch (IOException e) {
-            log.error(e.toString());
+            Logger.error(e);
         }
         return row;
     }
@@ -119,7 +118,7 @@ public abstract class Parser {
                     indent(2), wind.getSpeed(), getWordByDeg(wind.getDeg())
             );
         } catch (IOException e) {
-            log.error(e.toString());
+            Logger.error(e);
         }
         return attachFooter(result);
     }
@@ -144,7 +143,7 @@ public abstract class Parser {
                     indent(2), daily.getWindSpeed() , getWordByDeg(daily.getWindDeg())
             );
         } catch (IOException e) {
-            log.error(e.toString());
+            Logger.error(e);
         }
         return attachFooter(result);
     }
@@ -166,7 +165,7 @@ public abstract class Parser {
                 ));
             }
         } catch (IOException e) {
-            log.error(e.toString());
+            Logger.error(e);
         }
         assert result != null;
         return attachFooter(result.toString());
@@ -192,7 +191,7 @@ public abstract class Parser {
                 ));
             }
         } catch (IOException e) {
-            log.error(e.toString());
+            Logger.error(e);
         }
         assert result != null;
         return attachFooter(result.toString());

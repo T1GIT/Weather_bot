@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import jsonParser.Parser;
 import jsonParser.templates.currentWeather.CurrentOW;
 import jsonParser.templates.oneCall.OneCallOW;
-import org.apache.log4j.Logger;
 import telegramBot.TelegramBot;
+import utils.Logger;
 import weatherGetter.WeatherGetter;
 
 import java.io.IOException;
@@ -13,7 +13,6 @@ import java.io.IOException;
 
 public class User {
     private static final Gson gson = new Gson();
-    private static final Logger log = Logger.getLogger(User.class);
     private static TelegramBot telegramBot;
     private static WeatherGetter weatherGetter;
     private final String id;
@@ -66,7 +65,7 @@ public class User {
             String outText = Parser.current(currentOW, location.getCity());
             telegramBot.sendMsg(this, outText);
         } catch (IOException e) {
-            log.error(e.toString());
+            Logger.error(e);
         }
     }
 
@@ -77,7 +76,7 @@ public class User {
             String outText = Parser.tomorrow(oneCallOW.getDaily()[1], location.getCity());
             telegramBot.sendMsg(this, outText);
         } catch (IOException e) {
-            log.error(e.toString());
+            Logger.error(e);
         }
     }
 
@@ -88,7 +87,7 @@ public class User {
             String outText = Parser.daily(oneCallOW.getDaily(), location.getCity());
             telegramBot.sendMsg(this, outText);
         } catch (IOException e) {
-            log.error(e.toString());
+            Logger.error(e);
         }
     }
 
@@ -99,7 +98,7 @@ public class User {
             String outText = Parser.hourly(oneCallOW.getHourly(), location.getCity());
             telegramBot.sendMsg(this, outText);
         } catch (IOException e) {
-            log.error(e.toString());
+            Logger.error(e);
         }
     }
 }

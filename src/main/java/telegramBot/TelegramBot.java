@@ -1,7 +1,6 @@
 package telegramBot;
 
 import exceptions.CityNotFoundException;
-import org.apache.log4j.Logger;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -14,6 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import telegramBot.entities.Subscribers;
 import telegramBot.entities.User;
+import utils.Logger;
 import utils.Paths;
 import weatherGetter.WeatherGetter;
 
@@ -27,8 +27,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private static final String TOKEN = "1456615883:AAHv0T4ySbE4x6ZrlpbSDhSFPwQMjwhb4kY";
     private static final String BOT_USERNAME = "T1WEATHER_bot";
     private static final String BOT_CHAT_ID = "1456615883";
-    private static final char adminChar = '$';
-    private static final Logger log = Logger.getLogger(TelegramBot.class);
+    private static final String adminSign = "$";
     private final WeatherGetter weatherGetter;
     private final Subscribers subscribers;
     private final HashMap<String, User> users;
@@ -46,7 +45,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             Scanner scanner = new Scanner(new FileReader(Paths.getAdmin()));
             while (scanner.hasNextLine()) adminIdList.add(scanner.nextLine().split("\\|")[0].strip());
         } catch (FileNotFoundException e) {
-            log.error(e.toString());
+            Logger.error(e);
         }
     }
 
@@ -72,8 +71,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 answer(inMsg);
             }
         } catch (Exception e) {
-            log.error(e.toString());
-            e.printStackTrace();
+            Logger.error(e);
         }
     }
 
@@ -94,52 +92,47 @@ public class TelegramBot extends TelegramLongPollingBot {
         String name = inMsg.getChat().getFirstName();
         String inText = inMsg.getText();
         User user = getUser(chatId, name);
-        msgLog(user, inText, "from");
-        if (inText.charAt(0) == adminChar) {
-            adminCommand(user, inText.substring(1));
+        Logger.messageLog(user, inText, "from");
+        if (inText.length() > 50) {
+            user.send("Ни к чему мне такие длинные послания");
+        } else if (inText.startsWith(adminSign)) {
+            if (!adminIdList.contains(chatId)) user.send("Прав администратора ты не имеешь");
+            else adminCommand(user, inText);
         } else {
             if (inText.equals("/start")) {
                 user.send("Здравствуй, юный подаван (@_@)");
-                if (!user.hasLocation()) {
-                    user.send("Откуда ты, знать я желаю");
-                }
+                if (!user.hasLocation()) user.send("Откуда ты, знать я желаю");
             } else {
                 if (!user.hasLocation()) {
                     try {
                         user.setLocation(weatherGetter.getLocationByCity(inText));
                         user.send("Твое местоположение известно мне стало");
                     } catch (CityNotFoundException e) {
-                        user.send("Не известен город " + inText + " мне");
+                        user.send("Не известно поселение " + inText + " мне");
                         user.send("Откуда ты, знать я желаю");
                     }
-                } else {
-                    command(user, inText);
-                }
+                } else command(user, inText);
             }
         }
     }
 
     private void adminCommand(User user, String command) {
-        command = command.toLowerCase();
-        if (!adminIdList.contains(user.getId())) {
-            user.send("Прав администратора ты не имеешь");
+        command = command.substring(1).toLowerCase();
+        if (command.equals("key")) {
+            user.send(weatherGetter.getKey());
         } else {
-            if (command.equals("key")) {
-                user.send(weatherGetter.getKey());
-            } else {
-                try {
-                    File file = new File(Paths.getLogs(), command + ".log");
-                    if (!file.exists()) {
-                        user.send("Не существует " + command + ".log");
-                    } else {
-                        SendDocument sendDocument = new SendDocument();
-                        sendDocument.setChatId(user.getId());
-                        sendDocument.setDocument(new InputFile(file));
-                        execute(sendDocument);
-                    }
-                } catch (TelegramApiException e) {
-                    log.error(e.toString());
+            try {
+                File file = new File(Paths.getLogs(), command + ".log");
+                if (!file.exists()) {
+                    user.send("Не существует " + command + ".log");
+                } else {
+                    SendDocument sendDocument = new SendDocument();
+                    sendDocument.setChatId(user.getId());
+                    sendDocument.setDocument(new InputFile(file));
+                    execute(sendDocument);
                 }
+            } catch (TelegramApiException e) {
+                Logger.error(e);
             }
         }
     }
@@ -147,27 +140,23 @@ public class TelegramBot extends TelegramLongPollingBot {
     private void command(User user, String command) throws IOException {
         command = command.toLowerCase();
         switch (command) {
-            case "сегодня" -> user.sendCurrent();
-            case "завтра" -> user.sendTomorrow();
-            case "неделя" -> user.sendDaily();
-            case "12 часов" -> user.sendHourly();
-            case "подписаться" -> {
-                if (subscribers.contains(user)) {
-                    user.send("Тебя уже знаю я");
-                } else {
-                    subscribers.add(user);
-                    user.send("Каждый день получать погоду будешь ты");
-                }
-            }
-            case "отписаться" -> {
+            case "сегодня", "/today" -> user.sendCurrent();
+            case "завтра", "/tomorrow" -> user.sendTomorrow();
+            case "неделя", "/week" -> user.sendDaily();
+            case "12 часов", "/hours" -> user.sendHourly();
+            case "подписаться", "/subscribe" -> {
                 if (!subscribers.contains(user)) {
-                    user.send("Не помню тебя я");
-                } else {
-                    subscribers.remove(user);
-                    user.send("Получать погоду больше не будешь ты");
-                }
+                    subscribers.add(user);
+                    user.send("Каждый день получать погоду ты будешь");
+                } else user.send("Тебя уже знаю я");
             }
-            case "изменить расположение" -> {
+            case "отписаться", "/unsubscribe" -> {
+                if (subscribers.contains(user)) {
+                    subscribers.remove(user);
+                    user.send("Получать погоду больше не ты не будешь");
+                } else user.send("Не помню тебя я");
+            }
+            case "изменить расположение", "/location" -> {
                 subscribers.remove(user);
                 user.setLocation(null);
                 user.send("Куда отправился ты?");
@@ -191,9 +180,9 @@ public class TelegramBot extends TelegramLongPollingBot {
             outMsg.setText(outText);
             outMsg.setParseMode("HTML");
             execute(outMsg);
-            msgLog(user, outText, "to");
+            Logger.messageLog(user, outText, "to");
         } catch (TelegramApiException e) {
-            log.error(e.toString());
+            Logger.error(e);
         }
     }
 
@@ -220,11 +209,5 @@ public class TelegramBot extends TelegramLongPollingBot {
             replyKeyboardRemove.setRemoveKeyboard(true);
             outMsg.setReplyMarkup(replyKeyboardRemove);
         }
-    }
-
-    private void msgLog(User user, String text, String direction) {
-        log.info(String.format("%-4s | %s | %10s | %s",
-                direction, user.getId(), user.getName(), text.replaceAll("[\f\r\n]", " ")
-        ) );
     }
 }

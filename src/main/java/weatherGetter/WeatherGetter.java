@@ -2,6 +2,7 @@ package weatherGetter;
 
 import com.google.gson.Gson;
 import exceptions.CityNotFoundException;
+import exceptions.InvalidApiKeyException;
 import jsonParser.templates.currentWeather.CurrentOW;
 import jsonParser.templates.currentWeather.inner.Coord;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -9,18 +10,19 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
 import telegramBot.entities.Location;
+import utils.Logger;
 import utils.Paths;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class WeatherGetter {
-    private static final Logger log = Logger.getLogger(WeatherGetter.class);
     private final Gson gson;
     private final ArrayList<String> apiKeys;
     private int lastKeyNum = 0;
@@ -40,17 +42,21 @@ public class WeatherGetter {
             Scanner scanner = new Scanner(new FileReader(Paths.getKeys()));
             while (scanner.hasNextLine()) apiKeys.add(scanner.nextLine().strip());
         } catch (FileNotFoundException e) {
-            log.error(e.toString());
+            Logger.error(e);
         }
     }
 
+    private String encode(String string) {
+        return URLEncoder.encode(string, StandardCharsets.UTF_8);
+    }
+
     private String addMetrics(String url) {
-        return String.format(url + "&units=%s&lang=%s",
+        return url + String.format("&units=%s&lang=%s",
                 units, lang);
     }
 
     private String addKey(String url) {
-        return String.format(url + "&appid=%s",
+        return url + String.format("&appid=%s",
                 apiKeys.get(lastKeyNum));
     }
 
@@ -60,26 +66,28 @@ public class WeatherGetter {
 
     private String request(String rowUrl) throws IOException {
         String answer;
-        String url = addMetrics(addKey(rowUrl)).replaceAll(" ", "+");
+        String url = addKey(addMetrics(rowUrl.replaceAll(" ", "+")));
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             try (CloseableHttpResponse response = httpClient.execute(new HttpGet(url))) {
-                int code = response.getStatusLine().getStatusCode();
-                if (code == 404) throw new CityNotFoundException();
-                else if (code == 401 || code == 429) {
-                    refreshKey();
-                    return request(rowUrl);
+                switch (response.getStatusLine().getStatusCode()) {
+                    case 200 -> answer = EntityUtils.toString(response.getEntity());
+                    case 404 -> throw new CityNotFoundException();
+                    case 429 -> {
+                        refreshKey();
+                        return request(rowUrl);
+                    }
+                    case 401 -> throw new InvalidApiKeyException();
+                    default -> throw new IOException();
                 }
-                else if (code != 200) throw new IOException();
-                else answer = EntityUtils.toString(response.getEntity());
             }
         }
-        requestLog(url, answer);
+        Logger.requestLog(url, answer);
         return answer;
     }
 
     public Location getLocationByCity(String cityName) throws IOException {
         String url = String.format("%s?q=%s",
-                currentRoot, cityName);
+                currentRoot, encode(cityName));
         CurrentOW currentOW = gson.fromJson(request(url), CurrentOW.class);
         Coord coord = currentOW.getCoord();
         return new Location(cityName, coord.getLat(), coord.getLon());
@@ -87,7 +95,7 @@ public class WeatherGetter {
 
     public String getCurrent(Location location) throws IOException {
         String url = String.format("%s?q=%s",
-                currentRoot, location.getCity());
+                currentRoot, encode(location.getCity()));
         return request(url);
     }
 
@@ -101,11 +109,5 @@ public class WeatherGetter {
         String url = String.format("%s?lat=%f&lon=%f&exclude=alerts,minutely,current,daily",
                 oneCallRoot, location.getLat(), location.getLon());
         return request(url);
-    }
-
-    private void requestLog(String url, String answer) {
-        log.info(String.format("%-150s | %s",
-                url, answer.replaceAll("[\f\r\n]", " ")
-        ) );
     }
 }

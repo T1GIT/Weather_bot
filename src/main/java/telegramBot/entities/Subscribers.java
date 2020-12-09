@@ -1,5 +1,7 @@
 package telegramBot.entities;
 
+import utils.Logger;
+
 import java.util.HashSet;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,7 +32,11 @@ public class Subscribers extends Thread {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                for (User user: subscribers) user.sendCurrent();
+                try {
+                    for (User user: subscribers) user.sendCurrent();
+                } catch (Exception e) {
+                    Logger.error(e);
+                }
             }
         }, 0, period);
     }
