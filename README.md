@@ -80,8 +80,9 @@ This bot is ready for deployment, and already deployd on the [heroku.com](https:
 
 ## Built With
 
-* [TelegramBots](https://github.com/rubenlagus/TelegramBots) - Library to interacting with Telegram
+* [Java 14](https://www.oracle.com/ru/java/) - Language
 * [Maven](https://maven.apache.org/) - Dependency Management
+* [TelegramBots](https://github.com/rubenlagus/TelegramBots) - Library to interacting with Telegram
 * [Gson](https://github.com/google/gson) - Library used for deserializing json
 * [Log4j](https://logging.apache.org/log4j/2.x/) - Logging
 
