@@ -9,10 +9,8 @@
         <module name="Weather_bot" />
       </profile>
     </annotationProcessing>
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Weather_bot" options="" />
-    </option>
+    <bytecodeTargetLevel>
+      <module name="Weather_bot" target="14" />
+    </bytecodeTargetLevel>
   </component>
 </project>
