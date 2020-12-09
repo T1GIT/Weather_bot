@@ -11,18 +11,6 @@ public abstract class InnerAbstract {
         return sign + state.substring(0, 1).toUpperCase() + state.substring(1) + sign;
     }
 
-    public String[] getWeathers() {
-        String[] result = new String[weather.length];
-        String sign;
-        String state;
-        for (int i = 0; i < result.length; i++) {
-            sign = weather[i].getSign();
-            state = weather[i].getDescription();
-            result[i] = sign + state.substring(0, 1).toUpperCase() + state.substring(1) + sign;
-        }
-        return result;
-    }
-
     public long getDate() {
         return dt * 1000;
     }

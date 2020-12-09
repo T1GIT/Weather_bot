@@ -23,9 +23,5 @@ public class CurrentOW extends InnerAbstract {
     public Wind getWind() {
         return wind;
     }
-
-    public String getCity() {
-        return name;
-    }
 }
 
