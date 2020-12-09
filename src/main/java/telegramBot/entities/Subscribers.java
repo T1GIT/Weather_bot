@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 public class Subscribers extends Thread {
     private static final Calendar day = Calendar.getInstance();
     private static final int[] time = new int[]{9, 0, 0};
-    private static final long period = TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS);
+    private static final long period = TimeUnit.MILLISECONDS.convert(10, TimeUnit.SECONDS);
     private final HashSet<User> subscribers;
     private final Timer timer;
 
