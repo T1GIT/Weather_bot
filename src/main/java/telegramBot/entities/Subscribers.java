@@ -1,6 +1,5 @@
 package telegramBot.entities;
 
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Timer;
 import java.util.TimerTask;

@@ -1,2 +1,2 @@
 SET /P NAME=<appname.txt
-heroku logs --app %NAME% > ../logs/console.log
+heroku logs --app %NAME% > console.log
