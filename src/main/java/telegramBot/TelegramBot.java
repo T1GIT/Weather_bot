@@ -24,8 +24,11 @@ import java.io.IOException;
 import java.util.*;
 
 public class TelegramBot extends TelegramLongPollingBot {
-    private final Logger log = Logger.getLogger(TelegramBot.class);
+    private static final String TOKEN = "1456615883:AAHv0T4ySbE4x6ZrlpbSDhSFPwQMjwhb4kY";
+    private static final String BOT_USERNAME = "T1WEATHER_bot";
+    private static final String BOT_CHAT_ID = "1456615883";
     private static final char adminChar = '$';
+    private static final Logger log = Logger.getLogger(TelegramBot.class);
     private final WeatherGetter weatherGetter;
     private final Subscribers subscribers;
     private final HashMap<String, User> users;
@@ -49,12 +52,16 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "1456615883:AAHv0T4ySbE4x6ZrlpbSDhSFPwQMjwhb4kY";
+        return TOKEN;
     }
 
     @Override
     public String getBotUsername() {
-        return "T1WEATHER_bot";
+        return BOT_USERNAME;
+    }
+
+    public String getBotChatId() {
+        return BOT_CHAT_ID;
     }
 
     @Override
