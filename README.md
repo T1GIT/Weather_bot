@@ -13,8 +13,9 @@ It has possibility of daily subscribing
 ## Getting Started
 
 1. Download project
-2. Install _maven dependencies_
-3. Run [Main.java](src/main/java/Main.java) from the IntelliJ IDE
+2. Install java version 14 or newer
+3. Install [Maven dependencies](#maven-dependencies)
+4. Run [Main.java](src/main/java/Main.java) from the IntelliJ IDE
 
 ## Using
 
@@ -95,7 +96,7 @@ This bot is ready for deployment, and already deployd on the [heroku.com](https:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ### Version 1.2
 #### 09.12.2020
