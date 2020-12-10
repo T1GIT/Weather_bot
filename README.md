@@ -1,7 +1,5 @@
 <img src="https://github.com/T1GIT/T1GIT/raw/main/covers/T1WEATHER.png">
 
-<h1 align="center"> Weather Telegram Bot </h1>
-
 <h3 align="center"> |
     <a href="#Description"> Description </a> |
     <a href="#Getting-Started"> Getting Started </a> |
@@ -11,6 +9,8 @@
 </h3> 
 
 ------------------------------------------------
+
+<h1 align="center"> Weather Telegram Bot </h1>
 
 ## Descrition
 This Telegram Bot can provide users information about weather
