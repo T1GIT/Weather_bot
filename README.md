@@ -1,3 +1,5 @@
+<img src="https://github.com/T1GIT/T1GIT/raw/main/covers/T1WEATHER.png">
+
 # Weather Telegram Bot
 
 This Telegram Bot can provide users information about weather
@@ -8,7 +10,7 @@ You can get weather for:
 3. Week
 4. 12 hours
 
-It has possibility of daily subscribing
+It has possibility of day-to-day subscribing
 
 ## Getting Started
 
