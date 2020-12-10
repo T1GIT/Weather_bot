@@ -12,7 +12,7 @@
 
 <h1 align="center"> Weather Telegram Bot </h1>
 
-## Descrition
+## Description
 This Telegram Bot can provide users information about weather
 
 **You can get weather for:**
