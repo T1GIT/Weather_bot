@@ -1,16 +1,29 @@
 <img src="https://github.com/T1GIT/T1GIT/raw/main/covers/T1WEATHER.png">
 
-# Weather Telegram Bot
+<h1 align="center"> Weather Telegram Bot </h1>
 
+<h3 align="center"> |
+    <a href="#Description"> Description </a> |
+    <a href="#Getting-Started"> Getting Started </a> |
+    <a href="#Built-With"> Built With </a> |
+    <a href="#Author"> Author </a> |
+    <a href="#License"> License </a> |
+</h3> 
+
+------------------------------------------------
+
+## Descrition
 This Telegram Bot can provide users information about weather
 
-You can get weather for:
+**You can get weather for:**
 1. Today
 2. Tomorrow
 3. Week
 4. 12 hours
 
-It has possibility of day-to-day subscribing
+It has possibility of day-to-day **subscribing**
+
+Information receives from the [OpenWeatherAPI](https://openweathermap.org/api)
 
 ## Getting Started
 
