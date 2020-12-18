@@ -104,7 +104,7 @@ This bot is ready for deployment, and already deployd on the [heroku.com](https:
 
 ## Author
 
-### **Derbin Dmitriy** 
+### [**Derbin Dmitriy**](https://github.com/T1GIT)
 
 #### Student of the Financial University
 ##### Group: PI19-5
