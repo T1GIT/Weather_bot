@@ -111,7 +111,7 @@ This bot is ready for deployment, and already deployd on the [heroku.com](https:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the v3.0 License - see the [LICENSE](LICENSE) file for details
 
 ### Version 1.2
 #### 09.12.2020
